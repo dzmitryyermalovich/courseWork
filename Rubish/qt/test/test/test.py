@@ -11,9 +11,6 @@ import numpy as np
 from keras import models
 import random
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PIL import Image
-size = 350, 350
 
 maxlen=60
 
@@ -42,16 +39,6 @@ with open('C:\\machine learning\\ProcessPushkinData\\TyutchevPoems.txt',encoding
 with open('C:\\machine learning\\ProcessPushkinData\\BlokPoems.txt',encoding="UTF-8") as fp:
     dataBlok=fp.read()
 
-
-with open('C:\\CourseWork\\Biography\\PuskinBiography.txt',encoding="UTF-8") as fp:
-    PuskinBiography=fp.read()
-with open('C:\\CourseWork\\Biography\\EseninBiography.txt',encoding="UTF-8") as fp:
-    EseninBiography=fp.read()
-with open('C:\\CourseWork\\Biography\\TytchevBiography.txt',encoding="UTF-8") as fp:
-    TytchevBiography=fp.read()
-with open('C:\\CourseWork\\Biography\\BlokBiography.txt',encoding="UTF-8") as fp:
-    BlokBiography=fp.read()
-
 dataPushkin=dataPushkin.lower()
 dataYesenin=dataYesenin.lower()
 dataTyutchev=dataTyutchev.lower()
@@ -74,85 +61,33 @@ indices_char_tyutchev = dict((glagolitsa_Tyutchev.index(char),char) for char in 
 char_indices_blok = dict((char, glagolitsa_Blok.index(char)) for char in glagolitsa_Blok)
 indices_char_blok = dict((glagolitsa_Blok.index(char),char) for char in glagolitsa_Blok)
 
-q=0
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 607)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(410, 300, 361, 251))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.verticalLayoutWidget)
-        self.plainTextEdit.setObjectName("plainTextEdit")
-        self.verticalLayout.addWidget(self.plainTextEdit)
-        self.pushButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("background-color: rgb(190, 190, 190);")
-        self.pushButton.setObjectName("pushButton")
+class Window(QMainWindow):
+    def __init__(self):
+        super(Window,self).__init__()
 
-        self.pushButton.clicked.connect(self.WritePoem)
+        self.setWindowTitle("S1mple program")
+        self.setGeometry(250,200,650,400)
 
-        self.verticalLayout.addWidget(self.pushButton)
-        self.plainTextEdit_2 = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.plainTextEdit_2.setGeometry(QtCore.QRect(410, 40, 361, 251))
-        self.plainTextEdit_2.setObjectName("plainTextEdit_2")
-        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(300, 520, 91, 31))
-        self.textEdit.setObjectName("textEdit")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(410, 0, 361, 21))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.label.setFont(font)
-        self.label.setStyleSheet("background-color: rgb(143, 143, 143);")
-        self.label.setObjectName("label")
+        self.btn1=QtWidgets.QPushButton(self)
+        self.btn1.move(300,380)
+        self.btn1.setText("open")
+        self.btn1.clicked.connect(self.IdentifyThePoet)
 
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(140, 500, 151, 61))
-        self.label_2.setObjectName("label_2")
-        self.textEdit_2 = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit_2.setGeometry(QtCore.QRect(300, 470, 91, 31))
-        self.textEdit_2.setObjectName("textEdit_2")
-        self.lbl = QtWidgets.QLabel(MainWindow)
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(210, 480, 71, 20))
-        self.label_3.setObjectName("label_3")
+        self.btn2=QtWidgets.QPushButton(self)
+        self.btn2.move(300,400)
+        self.btn2.setText("print")
+        self.btn2.clicked.connect(self.print)
 
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
-        self.menubar.setObjectName("menubar")
-        self.menuOperation = QtWidgets.QMenu(self.menubar)
-        self.menuOperation.setObjectName("menuOperation")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.btn3=QtWidgets.QPushButton(self)
+        self.btn3.move(300,420)
+        self.btn3.setText("generate")
+        self.btn3.clicked.connect(self.WritePoem)
 
-        self.menuOperation.addAction("Import_Poet",self.IdentifyThePoet)
-
-        self.menubar.addAction(self.menuOperation.menuAction())
-
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Generate"))
-        self.label.setText(_translate("MainWindow", "Biography"))
-        self.label_2.setText(_translate("MainWindow", "the number of characters\n"
-"in the generated text"))
-        self.label_3.setText(_translate("MainWindow", "Distribution"))
-        self.menuOperation.setTitle(_translate("MainWindow", "Operation"))
+        self.btn4=QtWidgets.QPushButton(self)
+        self.btn4.move(300,440)
+        self.btn4.setText("print Photo")
+        self.btn4.clicked.connect(self.WritePoem)
 
     def IdentifyThePoet(self):
         self.path = QFileDialog.getOpenFileName()[0]
@@ -160,27 +95,6 @@ class Ui_MainWindow(object):
         self.face_emb=self.get_embedding(facenet_keras_model,self.face_array)
         self.samples = np.expand_dims(self.face_emb, axis=0)
         self.poet_name=self.DetectFace()
-
-        im = Image.open(self.path)
-        im.thumbnail(size, Image.ANTIALIAS)
-        im.save('C:\CourseWork\MyApplication\out.jpg', "JPEG")
-
-        self.lbl.clear()
-        self.pix = QtGui.QPixmap('C:\\CourseWork\\MyApplication\\out.jpg')
-        print(self.pix.isNull())
-        self.lbl.setPixmap(self.pix)
-        self.lbl.resize(400, 400)
-        self.lbl.move(20, 20)
-        self.lbl.show() 
-        self.plainTextEdit_2.setPlainText("This is "+self.poet_name+"\n");
-        if self.poet_name=="Pushkin":
-            self.plainTextEdit_2.setPlainText(PuskinBiography)
-        elif self.poet_name=="Blok":
-            self.plainTextEdit_2.setPlainText(BlokBiography)
-        elif self.poet_name=="Yesenin":
-            self.plainTextEdit_2.setPlainText(EseninBiography)
-        elif self.poet_name=="Tyutchev":
-            self.plainTextEdit_2.setPlainText(TytchevBiography)
         return self.poet_name
 
     def extract_face(self,filename,required_size=(160, 160)):
@@ -225,7 +139,7 @@ class Ui_MainWindow(object):
         print(self.poet_name)
         return self.poet_name
 
-    def sample(self,preds, temperature):
+    def sample(self,preds, temperature=1.0):
          preds = np.asarray(preds).astype('float64')
          preds = np.log(preds) / temperature
          exp_preds = np.exp(preds)
@@ -234,39 +148,14 @@ class Ui_MainWindow(object):
          return np.argmax(probas)
 
     def generate_sentence(self,model,sentense_gen,char_indices,indices_char,glagolitsa):
-        mytext = self.textEdit.toPlainText()
-        try:
-            if mytext!="":
-                n=int(mytext)
-            else:
-                n=200
-        except:
-            self.textEdit.setText("200")
-            n=200
-
-        distribution = self.textEdit_2.toPlainText()
-
-        try:
-            float(distribution)
-            if float(distribution)>1.0 or float(distribution)<0.0:
-                self.textEdit_2.setText("max")
-                distribution="max"
-        except:
-            self.textEdit_2.setText("max")
-            distribution="max"
-
         generated_text=sentense_gen
-        generated_text+=' | '
-        for i in range(n):
+        for i in range(200):
             sampled=np.zeros(shape=(1,maxlen,len(glagolitsa)))
             for j,chars in enumerate(sentense_gen):
                 sampled[0,j,char_indices.get(chars)]=1
             preds=model.predict(sampled,verbose=0)[0]
-            if distribution=="max" or distribution=="":
-                next_index=np.argmax(preds)
-            else:
-                k=float(distribution)
-                next_index = self.sample(preds,k) 
+            #next_index = sample(preds) 
+            next_index=np.argmax(preds)
             next_char = indices_char[next_index]
             sentense_gen += next_char
             generated_text += next_char
@@ -295,8 +184,7 @@ class Ui_MainWindow(object):
 
     def WritePoem(self):
         self.GeneratePoem(self.poet_name)
-        #print(self.poem)
-        self.plainTextEdit.setPlainText(self.poem);
+        print(self.poem)
         return self.poem
 
     def printPhot(self):
@@ -313,15 +201,4 @@ def application():
     window.show()
     sys.exit(app.exec_())
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    try:
-      sys.exit(app.exec_())
-    except:
-      print("The program is closed")
-
+application()
